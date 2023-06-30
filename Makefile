@@ -16,6 +16,7 @@ docker:
 	sudo apt-get -y update
 	sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 	sudo usermod -G docker -a $(USER)
+	sudo chmod 666 /var/run/docker.sock
 	sudo /etc/init.d/docker start
 
 golang:
