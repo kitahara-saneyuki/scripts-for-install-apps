@@ -1,6 +1,6 @@
 dc=docker-compose
-user_name="vincentj93"
-user_email="vincentju93@gmail.com"
+user_name="kitahara-saneyuki"
+user_email="edwarddwarf1999@gmail.com"
 SHELL := /bin/bash
 
 init:
