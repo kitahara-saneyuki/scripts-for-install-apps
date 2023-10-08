@@ -11,7 +11,7 @@ docker:
 	sudo apt-get -y install lsb-release
 	curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg --batch --yes
 	echo \
-		"deb [arch=$$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+		"deb [arch=$$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
 		$$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 	sudo apt-get -y update
 	sudo apt-get -y install docker-ce docker-ce-cli containerd.io
@@ -20,8 +20,8 @@ docker:
 	sudo /etc/init.d/docker start
 
 golang:
-	wget -qO https://go.dev/dl/go1.19.4.linux-amd64.tar.gz
-	sudo tar -C /usr/local -xzf go1.19.4.linux-amd64.tar.gz
+	wget -qO https://go.dev/dl/go1.21.2.linux-amd64.tar.gz
+	sudo tar -C /usr/local -xzf go1.21.2.linux-amd64.tar.gz
 	echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
 
 kubectl:
@@ -37,11 +37,11 @@ helm:
 	./get_helm.sh
 	rm get_helm.sh
 
-vscode:
-	wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
-	sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
-	sudo apt -y update
-	sudo apt install code
+vscodium:
+	sudo wget https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg -O /usr/share/keyrings/vscodium-archive-keyring.asc
+	echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.asc ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list
+	sudo apt update
+	sudo apt install codium codium-insiders	
 	echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 	cat /proc/sys/fs/inotify/max_user_watches
 
@@ -66,7 +66,11 @@ dbeaver:
 	sudo apt install dbeaver-ce
 
 yarn:
-	curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+	sudo apt-get update
+	sudo apt-get install -y ca-certificates curl gnupg
+	sudo mkdir -p /etc/apt/keyrings
+	curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+	echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 	sudo apt-get install -y nodejs build-essential
 	sudo npm install -g npm@latest
 	sudo npm install -g yarn
@@ -90,3 +94,21 @@ ruby:
 	${HOME}/.rbenv/bin/rbenv install $$(${HOME}/.rbenv/bin/rbenv install -l | grep -v - | tail -1)
 	${HOME}/.rbenv/bin/rbenv global $$(${HOME}/.rbenv/bin/rbenv install -l | grep -v - | tail -1)
 	echo 'export PATH=${HOME}/.rbenv/versions/$$(${HOME}/.rbenv/bin/rbenv install -l | grep -v - | tail -1)/bin:$$PATH' >> ~/.bashrc
+
+fprintd:
+	sudo apt remove fprintd
+	sudo apt install -y software-properties-common
+	sudo add-apt-repository ppa:uunicorn/open-fprintd
+	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8D4C774BA6D18F90
+	sudo apt-get update
+	sudo apt install -y open-fprintd fprintd-clients python3-validity
+	fprintd-enroll
+
+miniconda:
+	curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
+	sudo install -o root -g root -m 644 conda.gpg /usr/share/keyrings/conda-archive-keyring.gpg
+	gpg --keyring /usr/share/keyrings/conda-archive-keyring.gpg --no-default-keyring --fingerprint 34161F5BF5EB1D4BFBBB8F0A8AEB4F8B29D82806
+	echo "deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee -a /etc/apt/sources.list.d/conda.list
+	sudo apt update
+	sudo apt install conda
+	echo "source /opt/conda/etc/profile.d/conda.sh" > ~/.bashrc
