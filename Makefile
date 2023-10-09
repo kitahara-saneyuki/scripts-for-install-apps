@@ -102,7 +102,8 @@ fprintd:
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8D4C774BA6D18F90
 	sudo apt-get update
 	sudo apt install -y open-fprintd fprintd-clients python3-validity
-	fprintd-enroll
+	sudo systemctl start python3-validity
+	sudo systemctl enable open-fprintd-resume open-fprintd-suspend
 
 miniconda:
 	curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
