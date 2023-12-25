@@ -99,7 +99,6 @@ fprintd:
 	sudo apt remove fprintd
 	sudo apt install -y software-properties-common
 	sudo add-apt-repository ppa:uunicorn/open-fprintd
-	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8D4C774BA6D18F90
 	sudo apt-get update
 	sudo apt install -y open-fprintd fprintd-clients python3-validity
 	sudo systemctl start python3-validity
