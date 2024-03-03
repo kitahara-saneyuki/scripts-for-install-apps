@@ -126,6 +126,10 @@ frpc:
 	rm -rf "frp_0.54.0_linux_amd64"
 	sudo mkdir -p /etc/frp /var/frp
 	sudo cp ./frp/frpc.toml /etc/frp/frpc.toml
+	sudo cp ./frp/frpc.service /etc/systemd/system/frpc.service
+	systemctl daemon-reload
+	systemctl enable frps
+	systemctl start frps
 
 frps:
 	wget https://github.com/fatedier/frp/releases/download/v0.54.0/frp_0.54.0_linux_amd64.tar.gz
@@ -135,3 +139,7 @@ frps:
 	rm -rf "frp_0.54.0_linux_amd64"
 	sudo mkdir -p /etc/frp /var/frp
 	sudo cp ./frp/frps.toml /etc/frp/frps.toml
+	sudo cp ./frp/frps.service /etc/systemd/system/frps.service
+	systemctl daemon-reload
+	systemctl enable frps
+	systemctl start frps
