@@ -128,8 +128,8 @@ frpc:
 	sudo cp ./frp/frpc.toml /etc/frp/frpc.toml
 	sudo cp ./frp/frpc.service /etc/systemd/system/frpc.service
 	systemctl daemon-reload
-	systemctl enable frps
-	systemctl start frps
+	systemctl enable frpc
+	systemctl start frpc
 
 frps:
 	wget https://github.com/fatedier/frp/releases/download/v0.54.0/frp_0.54.0_linux_amd64.tar.gz
