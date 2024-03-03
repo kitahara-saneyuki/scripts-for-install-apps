@@ -1,0 +1,13 @@
+# frpc.toml
+transport.tls.enable = true # 从 v0.50.0版本开始，transport.tls.enable的默认值为 true
+serverAddr = "8.141.9.6"
+serverPort = 7000 # 公网服务端通信端口
+
+auth.token = "wX9kszB1VkRGuQV4kAlM8wowGCM" # 令牌，与公网服务端保持一致
+
+[[proxies]]
+name = "ssh"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 6000
