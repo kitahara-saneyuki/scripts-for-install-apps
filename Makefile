@@ -135,7 +135,7 @@ frps:
 	wget https://github.com/fatedier/frp/releases/download/v0.54.0/frp_0.54.0_linux_amd64.tar.gz
 	tar xzvf "frp_0.54.0_linux_amd64.tar.gz"
 	rm frp_0.54.0_linux_amd64.tar.gz*
-	sudo cp ./frp_0.54.0_linux_amd64/frpc /usr/bin
+	sudo cp ./frp_0.54.0_linux_amd64/frps /usr/bin
 	rm -rf "frp_0.54.0_linux_amd64"
 	sudo mkdir -p /etc/frp /var/frp
 	sudo cp ./frp/frps.toml /etc/frp/frps.toml
