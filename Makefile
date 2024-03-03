@@ -9,7 +9,7 @@ init:
 
 docker:
 	sudo apt-get -y install lsb-release
-	curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg --batch --yes
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg --batch --yes
 	echo \
 		"deb [arch=$$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
 		$$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
@@ -37,11 +37,15 @@ helm:
 	./get_helm.sh
 	rm get_helm.sh
 
-vscodium:
-	sudo wget https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg -O /usr/share/keyrings/vscodium-archive-keyring.asc
-	echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.asc ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list
+vscode:
+	sudo apt-get install wget gpg
+	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+	sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+	sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+	rm -f packages.microsoft.gpg
+	sudo apt install apt-transport-https
 	sudo apt update
-	sudo apt install codium codium-insiders	
+	sudo apt install code # or code-insiders
 	echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 	cat /proc/sys/fs/inotify/max_user_watches
 
@@ -113,3 +117,21 @@ miniconda:
 	sudo apt install conda
 	rm conda.gpg
 	echo "source /opt/conda/etc/profile.d/conda.sh" > ~/.bashrc
+
+frpc:
+	wget https://github.com/fatedier/frp/releases/download/v0.54.0/frp_0.54.0_linux_amd64.tar.gz
+	tar xzvf "frp_0.54.0_linux_amd64.tar.gz"
+	rm frp_0.54.0_linux_amd64.tar.gz*
+	sudo cp ./frp_0.54.0_linux_amd64/frpc /usr/bin
+	rm -rf "frp_0.54.0_linux_amd64"
+	sudo mkdir -p /etc/frp /var/frp
+	sudo cp ./frp/frpc.toml /etc/frp/frpc.toml
+
+frps:
+	wget https://github.com/fatedier/frp/releases/download/v0.54.0/frp_0.54.0_linux_amd64.tar.gz
+	tar xzvf "frp_0.54.0_linux_amd64.tar.gz"
+	rm frp_0.54.0_linux_amd64.tar.gz*
+	sudo cp ./frp_0.54.0_linux_amd64/frpc /usr/bin
+	rm -rf "frp_0.54.0_linux_amd64"
+	sudo mkdir -p /etc/frp /var/frp
+	sudo cp ./frp/frps.toml /etc/frp/frps.toml
