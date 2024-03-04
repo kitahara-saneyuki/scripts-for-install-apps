@@ -143,3 +143,8 @@ frps:
 	sudo systemctl daemon-reload
 	sudo systemctl enable frps
 	sudo systemctl start frps
+
+minikube:
+	curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-$$(dpkg --print-architecture)
+	sudo install minikube-linux-$$(dpkg --print-architecture) /usr/local/bin/minikube
+	rm minikube-linux-$$(dpkg --print-architecture)
