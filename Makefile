@@ -70,12 +70,9 @@ dbeaver:
 	sudo apt install dbeaver-ce
 
 yarn:
-	sudo apt-get update
-	sudo apt-get install -y ca-certificates curl gnupg
-	sudo mkdir -p /etc/apt/keyrings
-	curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-	echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-	sudo apt-get install -y nodejs build-essential
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+	source ~/.bashrc
+	nvm install v20.11.1
 	sudo npm install -g npm@latest
 	sudo npm install -g yarn
 	sudo npm install -g create-react-app
