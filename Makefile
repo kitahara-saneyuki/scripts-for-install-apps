@@ -145,3 +145,10 @@ minikube:
 	curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-$$(dpkg --print-architecture)
 	sudo install minikube-linux-$$(dpkg --print-architecture) /usr/local/bin/minikube
 	rm minikube-linux-$$(dpkg --print-architecture)
+
+osm2pgrouting:
+	sudo apt-get install expat libexpat1-dev libboost-dev libboost-program-options-dev libpqxx-dev
+
+code_server:
+	curl -fsSL https://code-server.dev/install.sh | sh
+	sudo systemctl enable --now code-server@$USER
